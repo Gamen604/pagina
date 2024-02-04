@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #pou {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            transition: transform 0.5s ease-in-out;
+        }
+    </style>
+    <title>Draggable Pou</title>
+</head>
+<body>
+
+    <img id="pou" src="pou_image.jpg" alt="Pou">
+
+    <script>
+        const pou = document.getElementById('pou');
+
+        pou.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+
+            const startX = e.clientX - pou.getBoundingClientRect().left;
+            const startY = e.clientY - pou.getBoundingClientRect().top;
+
+            function movePou(e) {
+                const x = e.clientX - startX;
+                const y = e.clientY - startY;
+
+                pou.style.transform = `translate(${x}px, ${y}px)`;
+            }
+
+            function releasePou() {
+                document.removeEventListener('mousemove', movePou);
+                document.removeEventListener('mouseup', releasePou);
+            }
+
+            document.addEventListener('mousemove', movePou);
+            document.addEventListener('mouseup', releasePou);
+        });
+    </script>
+
+</body>
+</html>
