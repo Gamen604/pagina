@@ -32,27 +32,39 @@
     <script>
         const pouContainer = document.getElementById('pouContainer');
 
-        pouContainer.addEventListener('mousedown', (e) => {
+        function startDrag(e) {
             e.preventDefault();
 
-            const startX = e.clientX - pouContainer.getBoundingClientRect().left;
-            const startY = e.clientY - pouContainer.getBoundingClientRect().top;
+            const startX = (e.type === 'touchstart') ? e.touches[0].clientX : e.clientX;
+            const startY = (e.type === 'touchstart') ? e.touches[0].clientY : e.clientY;
 
-            function movePou(e) {
-                const x = e.clientX - startX;
-                const y = e.clientY - startY;
+            function movePou(moveEvent) {
+                moveEvent.preventDefault();
 
-                pouContainer.style.transform = `translate(${x}px, ${y}px)`;
+                const x = (moveEvent.type === 'touchmove') ? moveEvent.touches[0].clientX : moveEvent.clientX;
+                const y = (moveEvent.type === 'touchmove') ? moveEvent.touches[0].clientY : moveEvent.clientY;
+
+                const translateX = x - startX;
+                const translateY = y - startY;
+
+                pouContainer.style.transform = `translate(${translateX}px, ${translateY}px)`;
             }
 
             function releasePou() {
                 document.removeEventListener('mousemove', movePou);
+                document.removeEventListener('touchmove', movePou);
                 document.removeEventListener('mouseup', releasePou);
+                document.removeEventListener('touchend', releasePou);
             }
 
             document.addEventListener('mousemove', movePou);
+            document.addEventListener('touchmove', movePou, { passive: false });
             document.addEventListener('mouseup', releasePou);
-        });
+            document.addEventListener('touchend', releasePou);
+        }
+
+        pouContainer.addEventListener('mousedown', startDrag);
+        pouContainer.addEventListener('touchstart', startDrag, { passive: false });
     </script>
 
 </body>
