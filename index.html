@@ -9,33 +9,40 @@
             overflow: hidden;
         }
 
-        #pou {
+        #pouContainer {
             position: absolute;
             width: 100px;
             height: 100px;
             transition: transform 0.5s ease-in-out;
+        }
+
+        #pou {
+            width: 100%;
+            height: 100%;
         }
     </style>
     <title>Draggable Pou</title>
 </head>
 <body>
 
-    <img id="pou" src="pou_image.jpg" alt="Pou">
+    <div id="pouContainer">
+        <img id="pou" src="pou_image.jpg" alt="Pou">
+    </div>
 
     <script>
-        const pou = document.getElementById('pou');
+        const pouContainer = document.getElementById('pouContainer');
 
-        pou.addEventListener('mousedown', (e) => {
+        pouContainer.addEventListener('mousedown', (e) => {
             e.preventDefault();
 
-            const startX = e.clientX - pou.getBoundingClientRect().left;
-            const startY = e.clientY - pou.getBoundingClientRect().top;
+            const startX = e.clientX - pouContainer.getBoundingClientRect().left;
+            const startY = e.clientY - pouContainer.getBoundingClientRect().top;
 
             function movePou(e) {
                 const x = e.clientX - startX;
                 const y = e.clientY - startY;
 
-                pou.style.transform = `translate(${x}px, ${y}px)`;
+                pouContainer.style.transform = `translate(${x}px, ${y}px)`;
             }
 
             function releasePou() {
